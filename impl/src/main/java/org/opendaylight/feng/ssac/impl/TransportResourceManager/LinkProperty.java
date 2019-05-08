@@ -5,7 +5,7 @@
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
-package org.opendaylight.feng.ssac.impl;
+package org.opendaylight.feng.ssac.impl.TransportResourceManager;
 
 import org.json.JSONObject;
 import org.opendaylight.feng.ssac.impl.networktopo.NetResource;
@@ -41,7 +41,7 @@ import java.util.Map;
 *   |   56-60  |   olt    | (81,82,83,84) |
 *    --------------------------------------
 * */
-public class LinkProperty extends NetResource implements LinkPropertyService{
+public class LinkProperty extends NetResource implements LinkPropertyService {
     private static Logger LOG = LoggerFactory.getLogger(LinkProperty.class);
 
 

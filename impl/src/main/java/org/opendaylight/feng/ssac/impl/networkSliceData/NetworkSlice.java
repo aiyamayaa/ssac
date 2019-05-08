@@ -28,7 +28,6 @@ public class NetworkSlice {
 
     private Map<Integer,Link> linkResource;
 
-
     public NetworkSlice(Short sliceID, List<Short> aauId, Map<Short, Short> duId, Map<Short, Short> cuId,
                         Map<Short, Integer> duResource, Map<Short, Integer> cuResource, List<Integer> linkId) {
         this.sliceID = sliceID;

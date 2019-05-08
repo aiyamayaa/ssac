@@ -7,7 +7,6 @@
  */
 package org.opendaylight.feng.ssac.impl.networktopo;
 
-import org.opendaylight.SliceMap.networkSlice.SliceMap;
 import org.opendaylight.feng.ssac.impl.physicalNetwork.*;
 import org.opendaylight.feng.ssac.impl.virtualNetwork.NetSlice;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.inventory.rev130819.NodeConnectorRef;
@@ -20,14 +19,11 @@ import java.util.Map;
 public class NetResource {
     protected static Map<Short,NodeConnectorRef> nodeIngress = new HashMap<>();
 
-
-
     protected static Map<Short,NodeAau> AauResource = new HashMap<>();
     protected static Map<Short,Procepool> DcResource = new HashMap<>();
     protected static Map<Short,NodeOLT> OltResource = new HashMap<>();
     protected static Map<Short,NodeRoadm> RoadmResource = new HashMap<>();
     protected static Map<Short,NodeEswitch> EswitchResource = new HashMap<>();
-
 
     protected static List<Short[]> NetpathResource = new ArrayList<>();
     protected static Map<Integer,Link> LinkResource = new HashMap<>();

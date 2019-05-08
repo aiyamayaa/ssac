@@ -5,7 +5,7 @@
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
-package org.opendaylight.feng.ssac.impl;
+package org.opendaylight.feng.ssac.impl.ComputeResourceManager;
 
 
 import org.json.JSONObject;
@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class HTTPconnected {
+public class OpenstackAgency {
 
     private static final String endpoint = "http://10.112.160.151:8181/restconf/operations/mmdc:command";
     private static final String delete_url = "http://10.112.160.151:8181/restconf/operations/mmdc:delete";

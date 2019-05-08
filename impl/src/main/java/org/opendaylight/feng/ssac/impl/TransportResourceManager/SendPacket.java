@@ -5,11 +5,10 @@
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
-package org.opendaylight.feng.ssac.impl;
+package org.opendaylight.feng.ssac.impl.TransportResourceManager;
 
 
-import netscape.javascript.JSObject;
-import org.json.JSONObject;
+import org.opendaylight.feng.ssac.impl.ChaNetRes;
 import org.opendaylight.feng.ssac.impl.networkSliceData.NetworkSlice;
 import org.opendaylight.feng.ssac.impl.networktopo.NetResource;
 import org.opendaylight.feng.ssac.impl.physicalNetwork.*;
@@ -37,7 +36,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +67,7 @@ public class SendPacket extends NetResource implements SendPacketService {
 
             Map<Short,String> duResults = slice.getDuResults();
             Map<Short,String> cuResults = slice.getCuResults();
-            HTTPconnected connected = new HTTPconnected();
+            /*OpenstackAgency connected = new OpenstackAgency();
             if(duResults!=null){
                 for(Map.Entry<Short, String> m :duResults.entrySet()){
                     LOG.info("------deleteSliceError--------duResults--------------{}"+m.getValue());
@@ -91,7 +89,7 @@ public class SendPacket extends NetResource implements SendPacketService {
             }else{
                  LOG.info("------deleteSliceError-------no-cuResults--------------");
             }
-
+*/
 
 
             //------------------------
@@ -223,7 +221,7 @@ public class SendPacket extends NetResource implements SendPacketService {
     public void SendAauConfig(nodeAAuConfig configBody) {
         LOG.info("AAU-Config jiaxin");
         NodeConnectorRef nodeRef = linkPropertyService.getNodeMapIgress().get(configBody.getAauID());
-        InstanceIdentifier<Node> egressNode = org.opendaylight.feng.ssac.impl.InstanceIdentifierUtils.getNodePath(nodeRef.getValue());
+        InstanceIdentifier<Node> egressNode = InstanceIdentifierUtils.getNodePath(nodeRef.getValue());
 
         PacketBniSetAauConfigInputBuilder builder = new PacketBniSetAauConfigInputBuilder();
         builder.setNode(new NodeRef(egressNode));
@@ -249,7 +247,7 @@ public class SendPacket extends NetResource implements SendPacketService {
         LOG.info("----SendDcConfig----- jiaxin");
         NodeConnectorRef nodeRef = linkPropertyService.getNodeMapIgress().get(configBody.getDcId());
         LOG.info("----SendDcConfig-----jiaxin--{}"+linkPropertyService.getNodeMapIgress().get(configBody.getDcId()));
-        InstanceIdentifier<Node> egressNode = org.opendaylight.feng.ssac.impl.InstanceIdentifierUtils.getNodePath(nodeRef.getValue());
+        InstanceIdentifier<Node> egressNode = InstanceIdentifierUtils.getNodePath(nodeRef.getValue());
         LOG.info("----SendDcConfig--nodeRef---jiaxin--{}"+nodeRef);
         PacketBniSetDcConfigInputBuilder builder = new PacketBniSetDcConfigInputBuilder();
         builder.setNode(new NodeRef(egressNode));
@@ -286,7 +284,7 @@ public class SendPacket extends NetResource implements SendPacketService {
         LOG.info("---sendRoadm----jiaxin--start");
         NodeConnectorRef nodeRef = linkPropertyService.getNodeMapIgress().get(configBody.getRoadmId());
         LOG.info("----SendDRoadmConfig-----jiaxin--{}"+linkPropertyService.getNodeMapIgress().get(configBody.getRoadmId()));
-        InstanceIdentifier<Node> egressNode = org.opendaylight.feng.ssac.impl.InstanceIdentifierUtils.getNodePath(nodeRef.getValue());
+        InstanceIdentifier<Node> egressNode = InstanceIdentifierUtils.getNodePath(nodeRef.getValue());
 
         PacketBniSetRoadmConfigInputBuilder builder = new PacketBniSetRoadmConfigInputBuilder();
         builder.setNode(new NodeRef(egressNode));
@@ -349,7 +347,7 @@ public class SendPacket extends NetResource implements SendPacketService {
         LOG.info("---sendOlt----jiaxin--start");
         NodeConnectorRef nodeRef = linkPropertyService.getNodeMapIgress().get(configBody.getOltId());
         LOG.info("----SendDOltConfig-----jiaxin--{}"+linkPropertyService.getNodeMapIgress().get(configBody.getOltId()));
-        InstanceIdentifier<Node> egressNode = org.opendaylight.feng.ssac.impl.InstanceIdentifierUtils.getNodePath(nodeRef.getValue());
+        InstanceIdentifier<Node> egressNode = InstanceIdentifierUtils.getNodePath(nodeRef.getValue());
 
         PacketBniSetOltConfigInputBuilder builder = new PacketBniSetOltConfigInputBuilder();
         builder.setNode(new NodeRef(egressNode));
@@ -372,7 +370,7 @@ public class SendPacket extends NetResource implements SendPacketService {
         LOG.info("---sendEswitch----jiaxin--start");
         NodeConnectorRef nodeRef = linkPropertyService.getNodeMapIgress().get(configBody.getEswitchId());
          LOG.info("----SendDEswitchConfig-----jiaxin--{}"+linkPropertyService.getNodeMapIgress().get(configBody.getEswitchId()));
-        InstanceIdentifier<Node> egressNode = org.opendaylight.feng.ssac.impl.InstanceIdentifierUtils.getNodePath(nodeRef.getValue());
+        InstanceIdentifier<Node> egressNode = InstanceIdentifierUtils.getNodePath(nodeRef.getValue());
 
         PacketBniSetEswitchConfigInputBuilder builder = new PacketBniSetEswitchConfigInputBuilder();
         builder.setNode(new NodeRef(egressNode));
@@ -526,13 +524,13 @@ public class SendPacket extends NetResource implements SendPacketService {
         LOG.info("------SendPacket-------sendDuConfig------configbody---{}"+configbody);
         SendDcConfig(configbody);
         LOG.info("------SendPacket------sendDuConfig-------end---");
-        HTTPconnected connected = new HTTPconnected();  //
+       /* OpenstackAgency connected = new OpenstackAgency();  //
         String result = connected.createVM("du"+DuID);
         JSONObject object = new JSONObject(result);
         JSONObject tmp = object.getJSONObject("output");
         String duId = tmp.getString("result");
         System.out.println("++++=Du++++++"+duId);
-        LOG.info("------SendPacket-------sendDuConfig---HTTPconnected------");
+        LOG.info("------SendPacket-------sendDuConfig---OpenstackAgency------");
 
             //create slice,save the slice
             NetSlice slice;
@@ -549,6 +547,7 @@ public class SendPacket extends NetResource implements SendPacketService {
 
         ChaNetRes cha = new ChaNetRes();
         cha.changNodeDc(flag,SliceId,DuID,DcID,capacity,LinkId,vlinkCapacity);
+        */
     }
 //
     @Override
@@ -560,13 +559,14 @@ public class SendPacket extends NetResource implements SendPacketService {
         nodeDcConfig configbody = new nodeDcConfig(DcID,(short)1,SliceId,CuId,(long)capacity,vlinkCapacity);
         LOG.info("------SendPacket-------sendCuConfig------configbody---{}"+configbody);
         SendDcConfig(configbody);
-        HTTPconnected connected = new HTTPconnected();
+        /*OpenstackAgency connected = new OpenstackAgency();
         String result = connected.createVM("cu"+CuId);
         JSONObject object = new JSONObject(result);
         JSONObject tmp = object.getJSONObject("output");
         String cuID = tmp.getString("result");
         System.out.println("+++ssac+++"+result);
-        LOG.info("------SendPacket-------sendCuConfig---HTTPconnected------");
+
+        LOG.info("------SendPacket-------sendCuConfig---OpenstackAgency------");
 
             //create slice,save the slice
             NetSlice slice;
@@ -583,6 +583,7 @@ public class SendPacket extends NetResource implements SendPacketService {
 
         ChaNetRes cha = new ChaNetRes();
         cha.changNodeDc(flag,SliceId,CuId,DcID,capacity,LinkId,vlinkCapacity);
+        */
         LOG.info("------SendPacket-------sendCuConfig------end---");
     }
 
@@ -608,13 +609,14 @@ public class SendPacket extends NetResource implements SendPacketService {
                 outport31_Wavelength,outport32_Wavelength,outport33_Wavelength,outport34_Wavelength,
                 outport41_Wavelength,outport42_Wavelength,outport43_Wavelength,outport44_Wavelength);
         LOG.info("------SendPacket-------sendRoadmConfig------end---");
-        if(nodeId==20){
+        if(nodeId==26){
             if(RoadmResource.containsKey(20)) {
                 LOG.info("------SendPacket-------sendRoadmConfig------sending20roadm---");
-                send20roadm();
+                send26roadm();
             }
         }
-          send20roadm();
+
+        send26roadm();
 //        if(nodeId==19){
 //            LOG.info("------SendPacket-------sendRoadmConfig------sending19roadm---");
 //            send19roadm();
@@ -622,7 +624,7 @@ public class SendPacket extends NetResource implements SendPacketService {
 
 
     }
-
+    @Override
     public void sendRoadm(short roadmId,Long outport11Wavelength,Long outport12Wavelength,Long outport13Wavelength,Long outport14Wavelength,
                           Long outport21Wavelength,Long outport22Wavelength,Long outport23Wavelength,Long outport24Wavelength,
                           Long outport31Wavelength,Long outport32Wavelength,Long outport33Wavelength,Long outport34Wavelength,
@@ -631,7 +633,7 @@ public class SendPacket extends NetResource implements SendPacketService {
         LOG.info("---send26Roadm----jiaxin--start-roadmId-{}"+roadmId);
         NodeConnectorRef nodeRef = linkPropertyService.getNodeMapIgress().get((short)26);
         LOG.info("----Send26RoadmConfig-----jiaxin--{}"+linkPropertyService.getNodeMapIgress().get((short)26));
-        InstanceIdentifier<Node> egressNode = org.opendaylight.feng.ssac.impl.InstanceIdentifierUtils.getNodePath(nodeRef.getValue());
+        InstanceIdentifier<Node> egressNode = InstanceIdentifierUtils.getNodePath(nodeRef.getValue());
 
         PacketBniSetRoadmConfigInputBuilder builder = new PacketBniSetRoadmConfigInputBuilder();
         builder.setNode(new NodeRef(egressNode));
@@ -667,10 +669,9 @@ public class SendPacket extends NetResource implements SendPacketService {
         LOG.info("----SendPacket------sendvAauConfig-------sengONU-");
         Integer nouid = 37;
         NodeConnectorRef nodeRef = linkPropertyService.getNodeMapIgress().get(nouid.shortValue());
-        InstanceIdentifier<Node> egressNode = org.opendaylight.feng.ssac.impl.InstanceIdentifierUtils.getNodePath(nodeRef.getValue());
+        InstanceIdentifier<Node> egressNode = InstanceIdentifierUtils.getNodePath(nodeRef.getValue());
 
         PacketBniSetAauConfigInputBuilder builder = new PacketBniSetAauConfigInputBuilder();
-        builder.setNode(new NodeRef(egressNode));
         builder.setAauId(nouid.shortValue());
         builder.setBlank((short)0);
         builder.setBlank1(0);
@@ -685,7 +686,7 @@ public class SendPacket extends NetResource implements SendPacketService {
     }
 
     @Override
-    public void send20roadm(){
+    public void send26roadm(){
         sendRoadm((short)26,new Long(0x0000000000000000),new Long(0x0000000000000000),zero,zero,
                 zero,zero,new Long(0x0000000000000000),zero,
                 zero,zero,new Long(0x0000000000000000),zero,

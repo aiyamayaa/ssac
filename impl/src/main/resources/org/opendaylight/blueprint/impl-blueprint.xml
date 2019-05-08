@@ -29,11 +29,11 @@ and is available at http://www.eclipse.org/legal/epl-v10.html
     <argument ref="notificationService"/>
     <argument ref="rpcRegister"/>
   </bean>
-  <service id="LinkPropertyService" interface="org.opendaylight.feng.ssac.impl.LinkPropertyService">
-    <bean class="org.opendaylight.feng.ssac.impl.LinkProperty"/>
+  <service id="LinkPropertyService" interface="org.opendaylight.feng.ssac.impl.TransportResourceManager.LinkPropertyService">
+    <bean class="org.opendaylight.feng.ssac.impl.TransportResourceManager.LinkProperty"/>
   </service>
-  <service id="sendPacket" interface="org.opendaylight.feng.ssac.impl.SendPacketService">
-    <bean class="org.opendaylight.feng.ssac.impl.SendPacket"/>
+  <service id="sendPacket" interface="org.opendaylight.feng.ssac.impl.TransportResourceManager.SendPacketService">
+    <bean class="org.opendaylight.feng.ssac.impl.TransportResourceManager.SendPacket"/>
   </service>
 
 </blueprint>
