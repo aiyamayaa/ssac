@@ -8,7 +8,10 @@
 package org.opendaylight.feng.ssac.impl.TransportResourceManager;
 
 
+import org.json.JSONObject;
+import org.opendaylight.feng.ssac.impl.Agency.OpenstackAgency;
 import org.opendaylight.feng.ssac.impl.ChaNetRes;
+import org.opendaylight.feng.ssac.impl.ComputeResourceManager.CRManager;
 import org.opendaylight.feng.ssac.impl.networkSliceData.NetworkSlice;
 import org.opendaylight.feng.ssac.impl.networktopo.NetResource;
 import org.opendaylight.feng.ssac.impl.physicalNetwork.*;
@@ -59,6 +62,7 @@ public class SendPacket extends NetResource implements SendPacketService {
     private static final Logger LOG = LoggerFactory.getLogger(SendPacket.class);
     LinkProperty linkPropertyService = new LinkProperty();
 
+    CRManager manager = new CRManager();
 
     @Override
     public void deleteSlice(Short sliceId) {
@@ -67,32 +71,10 @@ public class SendPacket extends NetResource implements SendPacketService {
 
             Map<Short,String> duResults = slice.getDuResults();
             Map<Short,String> cuResults = slice.getCuResults();
-            /*OpenstackAgency connected = new OpenstackAgency();
-            if(duResults!=null){
-                for(Map.Entry<Short, String> m :duResults.entrySet()){
-                    LOG.info("------deleteSliceError--------duResults--------------{}"+m.getValue());
-                    System.out.println("DELETE++++++++duID+++"+m.getValue());
-                    connected.delete(m.getValue());
-                }
-            }else{
-                 LOG.info("------deleteSliceError-------no-duResults--------------");
-            }
-            //-----------cuilu---------
 
-            if(cuResults!=null){
-                for(Map.Entry<Short, String> m :cuResults.entrySet()){
-                    LOG.info("------deleteSliceError--------cuResults--------------{}"+m.getValue());
-                    System.out.println("DELETE++++++++cuID+++"+m.getValue());
-                    connected.delete(m.getValue());
-                }
+            manager.deleteCu(cuResults);
+            manager.deleteDu(duResults);
 
-            }else{
-                 LOG.info("------deleteSliceError-------no-cuResults--------------");
-            }
-*/
-
-
-            //------------------------
             ChaNetRes chaNetRes = new ChaNetRes();
             List<nodeDcConfig> dcs = slice.getSliceDc();
             if(dcs!=null){
@@ -472,13 +454,10 @@ public class SendPacket extends NetResource implements SendPacketService {
         LOG.info("------SendPacket-------sendDuConfig------configbody---{}"+configbody);
         SendDcConfig(configbody);
         LOG.info("------SendPacket------sendDuConfig-------end---");
-       /* OpenstackAgency connected = new OpenstackAgency();  //
-        String result = connected.createVM("du"+DuID);
-        JSONObject ob   1           ject = new JSONObject(result);
-        JSONObject tmp = object.getJSONObject("output");
-        String duId = tmp.getString("result");
-        System.out.println("++++=Du++++++"+duId);
-        LOG.info("------SendPacket-------sendDuConfig---OpenstackAgency------");
+
+
+
+        String duId = manager.createDuCu(DuID,"du");
 
             //create slice,save the slice
             NetSlice slice;
@@ -495,7 +474,7 @@ public class SendPacket extends NetResource implements SendPacketService {
 
         ChaNetRes cha = new ChaNetRes();
         cha.changNodeDc(flag,SliceId,DuID,DcID,capacity,LinkId,vlinkCapacity);
-        */
+
     }
 //
     @Override
@@ -507,14 +486,7 @@ public class SendPacket extends NetResource implements SendPacketService {
         nodeDcConfig configbody = new nodeDcConfig(DcID,(short)1,SliceId,CuId,(long)capacity,vlinkCapacity);
         LOG.info("------SendPacket-------sendCuConfig------configbody---{}"+configbody);
         SendDcConfig(configbody);
-        /*OpenstackAgency connected = new OpenstackAgency();
-        String result = connected.createVM("cu"+CuId);
-        JSONObject object = new JSONObject(result);
-        JSONObject tmp = object.getJSONObject("output");
-        String cuID = tmp.getString("result");
-        System.out.println("+++ssac+++"+result);
-
-        LOG.info("------SendPacket-------sendCuConfig---OpenstackAgency------");
+        String cuID =  manager.createDuCu(CuId,"cu");
 
             //create slice,save the slice
             NetSlice slice;
@@ -528,10 +500,9 @@ public class SendPacket extends NetResource implements SendPacketService {
             slice.sliceSetCuResult(CuId,cuID);
             sliceMap.put(SliceId,slice);
 
-
         ChaNetRes cha = new ChaNetRes();
         cha.changNodeDc(flag,SliceId,CuId,DcID,capacity,LinkId,vlinkCapacity);
-        */
+
         LOG.info("------SendPacket-------sendCuConfig------end---");
     }
 

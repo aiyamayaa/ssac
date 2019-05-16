@@ -1,4 +1,4 @@
-package org.opendaylight.feng.ssac.impl.ComputeResourceManager;
+package org.opendaylight.feng.ssac.impl.Agency;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -33,12 +33,6 @@ public class OsmAgency {
         }
     }
 
-    public void configOsm(String cmd){
-        OsmAgency agency = new OsmAgency(23456,"10.112.197.221");
-        Thread t = new Thread(()->{
-           agency.getResult(cmd);
-        });
-        t.start();
-    }
+
 
 }
