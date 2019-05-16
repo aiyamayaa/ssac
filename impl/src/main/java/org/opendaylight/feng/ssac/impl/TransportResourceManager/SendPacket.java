@@ -230,7 +230,8 @@ public class SendPacket extends NetResource implements SendPacketService {
         builder.setBlank1(34);
 
         Long configCapacity = new Long(0);
-        configCapacity = configCapacity | configBody.getCapacity() | (configBody.getvAauId() << 16) | (configBody.getSliceId() << 24);
+        configCapacity = configCapacity | configBody.getCapacity() | (configBody.getvAauId() << 16) |
+                (configBody.getSliceId() << 24);
         LOG.info("config Frame"+ configCapacity);
         Long configFrame = new Long(0);
         configFrame = configFrame | configBody.getFlag() | ((long)configBody.getLinkCapacity() << 8) |
@@ -241,8 +242,6 @@ public class SendPacket extends NetResource implements SendPacketService {
         bniSetAauConfigService.packetBniSetAauConfig(builder.build());
 
     }
-
-
     public void SendDcConfig(nodeDcConfig configBody) {
         LOG.info("----SendDcConfig----- jiaxin");
         NodeConnectorRef nodeRef = linkPropertyService.getNodeMapIgress().get(configBody.getDcId());
@@ -279,7 +278,6 @@ public class SendPacket extends NetResource implements SendPacketService {
         bniSetDcConfigService.packetBniSetDcConfig(builder.build());
         LOG.info("----SendDcConfig-----jiaxin--end{}");
     }
-
     public void SendRoadmConfig(nodeRoadmConfig configBody) {
         LOG.info("---sendRoadm----jiaxin--start");
         NodeConnectorRef nodeRef = linkPropertyService.getNodeMapIgress().get(configBody.getRoadmId());
@@ -342,7 +340,6 @@ public class SendPacket extends NetResource implements SendPacketService {
         bniSetRoadmConfigService.packetBniSetRoadmConfig(builder.build());
         LOG.info("---sendRoadm----jiaxin--end");
     }
-
     public void SendOltConfig(nodeOltConfig configBody) {
         LOG.info("---sendOlt----jiaxin--start");
         NodeConnectorRef nodeRef = linkPropertyService.getNodeMapIgress().get(configBody.getOltId());
@@ -365,7 +362,6 @@ public class SendPacket extends NetResource implements SendPacketService {
         bniSetOltConfigService.packetBniSetOltConfig(builder.build());
         LOG.info("---sendOlt----jiaxin--end");
     }
-
     public void SendEswitchConfig(nodeEswitchConfig configBody) {
         LOG.info("---sendEswitch----jiaxin--start");
         NodeConnectorRef nodeRef = linkPropertyService.getNodeMapIgress().get(configBody.getEswitchId());
@@ -438,54 +434,6 @@ public class SendPacket extends NetResource implements SendPacketService {
         return outputValue;
     }
 
-    @Override
-    public void showSlice() {
-        LOG.info("------showSlice-------start--------------");
-        Map<Short, NetworkSlice> networkSlice = ChaNetRes.netSliceData;
-        for (Short sliceId:networkSlice.keySet()
-             ) {
-            NetworkSlice slice = networkSlice.get(sliceId);
-            LOG.info("------showSlice---------------------{}"+slice.toString());
-        }
-        LOG.info("------showSlice-------end--------------");
-    }
-
-    @Override
-    public void showNetResource() {
-        LOG.info("------showNetResource----------start-----------");
-        Map<Integer,Link> linkResource = LinkProperty.LinkResource;
-
-        Map<Short,NodeAau> aauResource = LinkProperty.AauResource;
-        Map<Short,Procepool> dcResource = LinkProperty.DcResource;
-        Map<Short,NodeOLT> oltResource = LinkProperty.OltResource;
-        Map<Short,NodeRoadm> roadmResource = LinkProperty.RoadmResource;
-        Map<Short,NodeEswitch> eswitchResource = LinkProperty.EswitchResource;
-        for (Integer key:linkResource.keySet()
-             ) {
-            LOG.info("------showNetResource------linkResource---------------()"+linkResource.get(key).toString());
-        }
-        for (Short key:aauResource.keySet()
-             ) {
-            LOG.info("------showNetResource------aauResource---------------()"+aauResource.get(key).toString());
-        }
-        for (Short key:dcResource.keySet()
-             ) {
-            LOG.info("------showNetResource------dcResource---------------()"+dcResource.get(key).toString());
-        }
-        for (Short key:oltResource.keySet()
-             ) {
-            LOG.info("------showNetResource--------oltResource-------------()"+oltResource.get(key).toString());
-        }
-        for (Short key:roadmResource.keySet()
-             ) {
-            LOG.info("------showNetResource-------roadmResource--------------()"+roadmResource.get(key).toString());
-        }
-        for (Short key:eswitchResource.keySet()
-             ) {
-            LOG.info("------showNetResource--------eswitchResource-------------()"+eswitchResource.get(key).toString());
-        }
-        LOG.info("------showNetResource---------end------------");
-    }
 
     @Override
     public void sendvAauConfig(Short flag, Short SliceId, Short vAauId, Integer antenna, Short aauId) {
@@ -526,7 +474,7 @@ public class SendPacket extends NetResource implements SendPacketService {
         LOG.info("------SendPacket------sendDuConfig-------end---");
        /* OpenstackAgency connected = new OpenstackAgency();  //
         String result = connected.createVM("du"+DuID);
-        JSONObject object = new JSONObject(result);
+        JSONObject ob   1           ject = new JSONObject(result);
         JSONObject tmp = object.getJSONObject("output");
         String duId = tmp.getString("result");
         System.out.println("++++=Du++++++"+duId);
@@ -663,6 +611,56 @@ public class SendPacket extends NetResource implements SendPacketService {
         bniSetRoadmConfigService.packetBniSetRoadmConfig(builder.build());
         LOG.info("---sendRoadm----jiaxin--end");
     }
+
+    @Override
+    public void showSlice() {
+        LOG.info("------showSlice-------start--------------");
+        Map<Short, NetworkSlice> networkSlice = ChaNetRes.netSliceData;
+        for (Short sliceId:networkSlice.keySet()
+                ) {
+            NetworkSlice slice = networkSlice.get(sliceId);
+            LOG.info("------showSlice---------------------{}"+slice.toString());
+        }
+        LOG.info("------showSlice-------end--------------");
+    }
+
+    @Override
+    public void showNetResource() {
+        LOG.info("------showNetResource----------start-----------");
+        Map<Integer,Link> linkResource = LinkProperty.LinkResource;
+
+        Map<Short,NodeAau> aauResource = LinkProperty.AauResource;
+        Map<Short,Procepool> dcResource = LinkProperty.DcResource;
+        Map<Short,NodeOLT> oltResource = LinkProperty.OltResource;
+        Map<Short,NodeRoadm> roadmResource = LinkProperty.RoadmResource;
+        Map<Short,NodeEswitch> eswitchResource = LinkProperty.EswitchResource;
+        for (Integer key:linkResource.keySet()
+                ) {
+            LOG.info("------showNetResource------linkResource---------------()"+linkResource.get(key).toString());
+        }
+        for (Short key:aauResource.keySet()
+                ) {
+            LOG.info("------showNetResource------aauResource---------------()"+aauResource.get(key).toString());
+        }
+        for (Short key:dcResource.keySet()
+                ) {
+            LOG.info("------showNetResource------dcResource---------------()"+dcResource.get(key).toString());
+        }
+        for (Short key:oltResource.keySet()
+                ) {
+            LOG.info("------showNetResource--------oltResource-------------()"+oltResource.get(key).toString());
+        }
+        for (Short key:roadmResource.keySet()
+                ) {
+            LOG.info("------showNetResource-------roadmResource--------------()"+roadmResource.get(key).toString());
+        }
+        for (Short key:eswitchResource.keySet()
+                ) {
+            LOG.info("------showNetResource--------eswitchResource-------------()"+eswitchResource.get(key).toString());
+        }
+        LOG.info("------showNetResource---------end------------");
+    }
+
 
     @Override
     public void send37aau(){

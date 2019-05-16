@@ -45,133 +45,6 @@ public class LinkProperty extends NetResource implements LinkPropertyService {
     private static Logger LOG = LoggerFactory.getLogger(LinkProperty.class);
 
 
-    @Override
-    public String getNetNode() {
-        String outString = "";
-        String outStringaau = "XXX--AauResource:&";
-        String outStringdc = "XXX--ProcessingPoolResource:&";
-        outString+="XXX-------------Network Resource---------------------&";
-        outString+="XXX--Network Node:&";
-
-        if(!AauResource.isEmpty()){
-            outString += "XXX----Aau/OnuNode:";
-            for (Short nodeId:AauResource.keySet()
-                    ) {
-                if(nodeId ==37){
-
-                }else{
-                    NodeAau node = AauResource.get(nodeId);
-                    outString+=nodeId+",";
-                    outStringaau+= "XXX----AauId:"+nodeId+"   TotalAntennas:"+node.getTotalAntennas()
-                            +"    ResidualAntennas"+node.getResidualAntennas()+"&";
-                }
-
-            }
-            outString+="&";
-        }
-        if(!DcResource.isEmpty()){
-            outString += "XXX----ProcessingPool:";
-            for (Short nodeId:DcResource.keySet()
-                    ) {
-                outString+=nodeId+",";
-                Procepool node = DcResource.get(nodeId);
-                outStringdc += "XXX----ProcePool:"+nodeId+"   TotalCapacity:"+node.getTotalCapacity()+"    ResidualCapacity:"
-                        +node.getResidualCapacity()+"    virtualNodeNums:"+node.getVirtualNodeNums()+"&";
-
-            }
-            outString+="&";
-        }
-        if(!OltResource.isEmpty()){
-            outString += "XXX----OLT:";
-            for (Short nodeId:OltResource.keySet()
-                    ) {
-
-                outString+=nodeId+",";
-            }
-            outString+="&";
-        }
-        if(!RoadmResource.isEmpty()){
-            outString += "XXX-----Roadm:";
-            for (Short nodeId:RoadmResource.keySet()
-                    ) {
-                outString+=nodeId+",";
-            }
-            outString+="&";
-        }
-        if(!EswitchResource.isEmpty()){
-            outString += "XXX----Eswitch:";
-            for (Short nodeId:EswitchResource.keySet()
-                    ) {
-                outString+=nodeId+",";
-            }
-            outString+="&";
-        }
-
-        outString+=outStringaau;
-        outString+=outStringdc;
-
-        return outString;
-    }
-
-    @Override
-    public String getPath(){
-        String outString="";
-        outString+="XXX-------------Network Path Resource---------------------:";
-        outString+="&";
-        if(!NetpathResource.isEmpty()){
-            for(Short[] path:NetpathResource){
-                outString+="XXX---";
-                for(Short i:path){
-                    outString+=i;
-                    outString+=",";
-                }
-                outString+="&";
-            }
-
-        }
-
-        return outString;
-    }
-    @Override
-    public String getNetLinkresource() {
-        String outString = "";
-        String oeLink = "";
-        String ooLink = "";
-        outString+="XXX-------------Network Link Resource---------------------&XXX--LinkId:";
-        if(!LinkResource.isEmpty()){
-            for (Integer id:LinkResource.keySet()
-                    ) {
-                outString+=id+",";
-            }
-            outString+="&";
-
-            for (Map.Entry<Integer, Link> map:LinkResource.entrySet()
-
-                    ) {
-                Link link = map.getValue();
-                if(link.getStartNode()==26||link.getDestNode()==26){
-
-                }else if(link.getLinkType().equals("oe")){
-                    oeLink=oeLink+"XXX--LinkId:"+link.getLinkId()+"    Linkcapacity:"+link.getLinkCapacity()
-                            +"    LinkLength:"+link.getLinkLength()+"&";
-
-                }else if(link.getLinkType().equals("oo")){
-                    if(link.getStartNode()<=30&&link.getStartNode()>=16){
-                        oeLink=oeLink+"XXX--LinkId:"+link.getLinkId()+"    Linkcapacity:"+link.getLinkCapacity()+link.getLinkWavelength()
-                                +"    LinkLength:"+link.getLinkLength()+"&";
-                    }
-                    ooLink=ooLink+"XXX--LinkId:"+link.getLinkId()+"    Linkcapacity:"+link.getLinkCapacity()+link.getLinkWavelength()
-                            +"    LinkLength:"+link.getLinkLength()+"&";
-
-                }
-            }
-            outString+=oeLink;
-            outString+=ooLink;
-        }
-
-        return outString;
-    }
-
     public void AauHandler(PacketBniAauFeatureReply replyBody){
         LOG.info("---jiaxinTed---AauHandler---start---{}"+replyBody);
         NodeConnectorRef ingress = replyBody.getIngress();
@@ -197,40 +70,10 @@ public class LinkProperty extends NetResource implements LinkPropertyService {
         LOG.info("Ted"+node.toString());
 
     }
-
-    public void DcHandler(PacketBniDcFeatureReply replyBody) {
-        LOG.info("---jiaxin---DcHandler---start---{}" + replyBody);
-        NodeConnectorRef ingress = replyBody.getIngress();
-        Short[] dcInfo = Long_To_Array_4(replyBody.getDcInfo());
-        Short nodeId = dcInfo[3];
-        nodeIngress.put(nodeId, ingress);
-        LOG.info("---jiaxin---DcHandler---saving---{}");
-        int[] dcResource = Data_To_Array_2(replyBody.getDcResource());
-        Procepool node = new Procepool(nodeId, dcInfo[1], dcResource[1], dcResource[0]);
-
-        if(DcResource.containsValue(nodeId)){
-            LOG.info("---jiaxin---DcHandler---containsValue---{}"+nodeId);
-            DcResource.remove(nodeId);
-            LOG.info("---jiaxin---DcHandler---DeleteValue---{}"+nodeId);
-            DcResource.put(nodeId,node);
-            LOG.info("---jiaxin---DcHandler---AddValue---{}"+nodeId);
-
-        }else{
-            DcResource.put(nodeId,node);
-            LOG.info("---jiaxin---DcHandler---AddValue---{}"+nodeId);
-        }
-        LOG.info("Ted"+node.toString());
-    }
-
-
-    public int doubletiInt(Double in){
-        return in.intValue();
-}
-
     public void OltHandler(PacketBniOltFeatureReply replyBody){
-         LOG.info("---jiaxin---OltHandler---start---{}", replyBody);
+        LOG.info("---jiaxin---OltHandler---start---{}", replyBody);
 
-         LOG.info("---jiaxin---OltHandler---start---{}");
+        LOG.info("---jiaxin---OltHandler---start---{}");
         NodeConnectorRef ingress = replyBody.getIngress();
         Short nodeId = replyBody.getOltId();
         nodeIngress.put(nodeId,ingress);
@@ -279,21 +122,29 @@ public class LinkProperty extends NetResource implements LinkPropertyService {
         LOG.info("Ted"+node.toString());
 
     }
-    public void putLink(Link link){
-        if(LinkResource.containsKey(link.getLinkId())){
-                    LOG.info("---jiaxin----putLink---Link has exist in LinkResource--{}" + link.getLinkId());
-                    LinkResource.remove(link.getLinkId());
+    public void DcHandler(PacketBniDcFeatureReply replyBody) {
+        LOG.info("---jiaxin---DcHandler---start---{}" + replyBody);
+        NodeConnectorRef ingress = replyBody.getIngress();
+        Short[] dcInfo = Long_To_Array_4(replyBody.getDcInfo());
+        Short nodeId = dcInfo[3];
+        nodeIngress.put(nodeId, ingress);
+        LOG.info("---jiaxin---DcHandler---saving---{}");
+        int[] dcResource = Data_To_Array_2(replyBody.getDcResource());
+        Procepool node = new Procepool(nodeId, dcInfo[1], dcResource[1], dcResource[0]);
 
-                    LOG.info("---jiaxin----putLink---Link has exist in LinkResource-removeLink-{}" + link.getLinkId());
-                    LinkResource.put(link.getLinkId(),link);
+        if(DcResource.containsValue(nodeId)){
+            LOG.info("---jiaxin---DcHandler---containsValue---{}"+nodeId);
+            DcResource.remove(nodeId);
+            LOG.info("---jiaxin---DcHandler---DeleteValue---{}"+nodeId);
+            DcResource.put(nodeId,node);
+            LOG.info("---jiaxin---DcHandler---AddValue---{}"+nodeId);
 
-                    LOG.info("---jiaxin---putLink----Link has exist in LinkResource-addLink-{}" + link.getLinkId());
-                }else{
-                    LOG.info("---jiaxin----putLink---Link not exist in LinkResource--{}" + link.getLinkId());
-                    LinkResource.put(link.getLinkId(),link);
-                }
+        }else{
+            DcResource.put(nodeId,node);
+            LOG.info("---jiaxin---DcHandler---AddValue---{}"+nodeId);
+        }
+        LOG.info("Ted"+node.toString());
     }
-
     public void EswitchHandler(PacketBniEswitchFeatureReply replyBody){
         LOG.info("---jiaxin---EswitchHandler---start---{}"+replyBody);
         NodeConnectorRef ingress = replyBody.getIngress();
@@ -384,7 +235,6 @@ public class LinkProperty extends NetResource implements LinkPropertyService {
         LOG.info("Ted"+node.toString());
 
     }
-
     public void RoadmHandler(PacketBniRoadmFeatureReply replyBody){
         LOG.info("---jiaxin---RoadmHandler---start---{}" + replyBody);
         NodeConnectorRef ingress = replyBody.getIngress();
@@ -472,17 +322,17 @@ public class LinkProperty extends NetResource implements LinkPropertyService {
         link4wave.addAll(inport4outport4eave);
         if(nodeId==19){
             if(connectedNodeId[0]!=0){
-                    LOG.info("---jiaxin---RoadmHandler--connectedNodeId not null--0--{}" + connectedNodeId[0]);
-                    Link link = new Link(nodeId,connectedNodeId[0],link1wave);
-                    link.setLinkLength(doubletiInt(Math.random()*20 +10));
-                    if(LinkResource.containsKey(link.getLinkId())){
-                        LinkResource.remove(link.getLinkId());
-                         LinkResource.put(link.getLinkId(),link);
-                    }else{
-                        LinkResource.put(link.getLinkId(),link);
-                    }
-                     LOG.info("---jiaxin---RoadmHandler--AddLink----{}"+link.getLinkId());
+                LOG.info("---jiaxin---RoadmHandler--connectedNodeId not null--0--{}" + connectedNodeId[0]);
+                Link link = new Link(nodeId,connectedNodeId[0],link1wave);
+                link.setLinkLength(doubletiInt(Math.random()*20 +10));
+                if(LinkResource.containsKey(link.getLinkId())){
+                    LinkResource.remove(link.getLinkId());
+                    LinkResource.put(link.getLinkId(),link);
+                }else{
+                    LinkResource.put(link.getLinkId(),link);
                 }
+                LOG.info("---jiaxin---RoadmHandler--AddLink----{}"+link.getLinkId());
+            }
 
         }
         for(int i=1;i<connectedNodeId.length;i++){
@@ -493,11 +343,11 @@ public class LinkProperty extends NetResource implements LinkPropertyService {
                     link.setLinkLength(doubletiInt(Math.random()*20 +10));
                     if(LinkResource.containsKey(link.getLinkId())){
                         LinkResource.remove(link.getLinkId());
-                         LinkResource.put(link.getLinkId(),link);
+                        LinkResource.put(link.getLinkId(),link);
                     }else{
                         LinkResource.put(link.getLinkId(),link);
                     }
-                     LOG.info("---jiaxin---RoadmHandler--AddLink----{}"+link.getLinkId());
+                    LOG.info("---jiaxin---RoadmHandler--AddLink----{}"+link.getLinkId());
                 }
 
             }else if(i==2){
@@ -507,7 +357,7 @@ public class LinkProperty extends NetResource implements LinkPropertyService {
                     link.setLinkLength(doubletiInt(Math.random()*20 +10));
                     if(LinkResource.containsKey(link.getLinkId())){
                         LinkResource.remove(link.getLinkId());
-                         LinkResource.put(link.getLinkId(),link);
+                        LinkResource.put(link.getLinkId(),link);
                     }else{
                         LinkResource.put(link.getLinkId(),link);
                     }
@@ -522,7 +372,7 @@ public class LinkProperty extends NetResource implements LinkPropertyService {
                     link.setLinkLength(doubletiInt(Math.random()*20 +10));
                     if(LinkResource.containsKey(link.getLinkId())){
                         LinkResource.remove(link.getLinkId());
-                         LinkResource.put(link.getLinkId(),link);
+                        LinkResource.put(link.getLinkId(),link);
                     }else{
                         LinkResource.put(link.getLinkId(),link);
                     }
@@ -533,6 +383,7 @@ public class LinkProperty extends NetResource implements LinkPropertyService {
         }
         LOG.info("Ted"+node.toString());
     }
+
 
     public void AauReplyHandler(PacketBniAauConfigReply replyBody){
         Long status = replyBody.getResult();
@@ -557,6 +408,149 @@ public class LinkProperty extends NetResource implements LinkPropertyService {
         LOG.info("--jiaxinTed--RoadmReplyHandler---CondigReplystatus----{}"+status);
     }
 
+
+    public void putLink(Link link){
+        if(LinkResource.containsKey(link.getLinkId())){
+            LOG.info("---jiaxin----putLink---Link has exist in LinkResource--{}" + link.getLinkId());
+            LinkResource.remove(link.getLinkId());
+
+            LOG.info("---jiaxin----putLink---Link has exist in LinkResource-removeLink-{}" + link.getLinkId());
+            LinkResource.put(link.getLinkId(),link);
+
+            LOG.info("---jiaxin---putLink----Link has exist in LinkResource-addLink-{}" + link.getLinkId());
+        }else{
+            LOG.info("---jiaxin----putLink---Link not exist in LinkResource--{}" + link.getLinkId());
+            LinkResource.put(link.getLinkId(),link);
+        }
+    }
+
+    @Override
+    public String getNetNode() {
+        String outString = "";
+        String outStringaau = "XXX--AauResource:&";
+        String outStringdc = "XXX--ProcessingPoolResource:&";
+        outString+="XXX-------------Network Resource---------------------&";
+        outString+="XXX--Network Node:&";
+
+        if(!AauResource.isEmpty()){
+            outString += "XXX----Aau/OnuNode:";
+            for (Short nodeId:AauResource.keySet()
+                    ) {
+                if(nodeId ==37){
+
+                }else{
+                    NodeAau node = AauResource.get(nodeId);
+                    outString+=nodeId+",";
+                    outStringaau+= "XXX----AauId:"+nodeId+"   TotalAntennas:"+node.getTotalAntennas()
+                            +"    ResidualAntennas"+node.getResidualAntennas()+"&";
+                }
+
+            }
+            outString+="&";
+        }
+        if(!DcResource.isEmpty()){
+            outString += "XXX----ProcessingPool:";
+            for (Short nodeId:DcResource.keySet()
+                    ) {
+                outString+=nodeId+",";
+                Procepool node = DcResource.get(nodeId);
+                outStringdc += "XXX----ProcePool:"+nodeId+"   TotalCapacity:"+node.getTotalCapacity()+"    ResidualCapacity:"
+                        +node.getResidualCapacity()+"    virtualNodeNums:"+node.getVirtualNodeNums()+"&";
+
+            }
+            outString+="&";
+        }
+        if(!OltResource.isEmpty()){
+            outString += "XXX----OLT:";
+            for (Short nodeId:OltResource.keySet()
+                    ) {
+
+                outString+=nodeId+",";
+            }
+            outString+="&";
+        }
+        if(!RoadmResource.isEmpty()){
+            outString += "XXX-----Roadm:";
+            for (Short nodeId:RoadmResource.keySet()
+                    ) {
+                outString+=nodeId+",";
+            }
+            outString+="&";
+        }
+        if(!EswitchResource.isEmpty()){
+            outString += "XXX----Eswitch:";
+            for (Short nodeId:EswitchResource.keySet()
+                    ) {
+                outString+=nodeId+",";
+            }
+            outString+="&";
+        }
+
+        outString+=outStringaau;
+        outString+=outStringdc;
+
+        return outString;
+    }
+
+    @Override
+    public String getPath(){
+        String outString="";
+        outString+="XXX-------------Network Path Resource---------------------:";
+        outString+="&";
+        if(!NetpathResource.isEmpty()){
+            for(Short[] path:NetpathResource){
+                outString+="XXX---";
+                for(Short i:path){
+                    outString+=i;
+                    outString+=",";
+                }
+                outString+="&";
+            }
+
+        }
+
+        return outString;
+    }
+
+    @Override
+    public String getNetLinkresource() {
+        String outString = "";
+        String oeLink = "";
+        String ooLink = "";
+        outString+="XXX-------------Network Link Resource---------------------&XXX--LinkId:";
+        if(!LinkResource.isEmpty()){
+            for (Integer id:LinkResource.keySet()
+                    ) {
+                outString+=id+",";
+            }
+            outString+="&";
+
+            for (Map.Entry<Integer, Link> map:LinkResource.entrySet()
+
+                    ) {
+                Link link = map.getValue();
+                if(link.getStartNode()==26||link.getDestNode()==26){
+
+                }else if(link.getLinkType().equals("oe")){
+                    oeLink=oeLink+"XXX--LinkId:"+link.getLinkId()+"    Linkcapacity:"+link.getLinkCapacity()
+                            +"    LinkLength:"+link.getLinkLength()+"&";
+
+                }else if(link.getLinkType().equals("oo")){
+                    if(link.getStartNode()<=30&&link.getStartNode()>=16){
+                        oeLink=oeLink+"XXX--LinkId:"+link.getLinkId()+"    Linkcapacity:"+link.getLinkCapacity()+link.getLinkWavelength()
+                                +"    LinkLength:"+link.getLinkLength()+"&";
+                    }
+                    ooLink=ooLink+"XXX--LinkId:"+link.getLinkId()+"    Linkcapacity:"+link.getLinkCapacity()+link.getLinkWavelength()
+                            +"    LinkLength:"+link.getLinkLength()+"&";
+
+                }
+            }
+            outString+=oeLink;
+            outString+=ooLink;
+        }
+
+        return outString;
+    }
 
     @Override
     public Map<Short,NodeConnectorRef> getNodeMapIgress(){
@@ -669,6 +663,10 @@ public class LinkProperty extends NetResource implements LinkPropertyService {
 
     }
 
+    public int doubletiInt(Double in){
+        return in.intValue();
+    }
+
     public List<Short> Long_To_List(Long input){
         List<Short> output =  new ArrayList<>();
         if(input ==0){
@@ -693,7 +691,6 @@ public class LinkProperty extends NetResource implements LinkPropertyService {
         return output;
     }
 
-
     public Map<Short,Integer> getLinkCapacity(BigInteger inputWavelength, BigInteger inputSlot){
         Map<Short,Integer> outputLinkCapacity = new HashMap<>();
         if(inputWavelength==new BigInteger("0")&&inputSlot==new BigInteger("0")){
@@ -717,6 +714,7 @@ public class LinkProperty extends NetResource implements LinkPropertyService {
         output = input.shortValue();
         return output;
     }
+
     public int Long_to_Int(Long input){
         int output;
         output = input.intValue();

@@ -28,7 +28,6 @@ public class NetResource {
     protected static List<Short[]> NetpathResource = new ArrayList<>();
     protected static Map<Integer,Link> LinkResource = new HashMap<>();
 
-
     public static Map<Short, NetSlice> sliceMap = new HashMap<>();           //sliceId NetSlice
 
     public void linkChangeWave(Short flag,Short startNode,Short destNode,Short wave){

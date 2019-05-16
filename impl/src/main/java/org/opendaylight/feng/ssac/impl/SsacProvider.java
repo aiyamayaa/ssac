@@ -48,7 +48,6 @@ public class SsacProvider {
                         final NotificationPublishService notificationPublishService,
                         final NotificationService notificationService,
                         final RpcProviderRegistry rpcRegistry) {
-
         this.dataBroker = dataBroker;
         this.notificationPublishService = notificationPublishService;
         this.notificationService = notificationService;
@@ -65,7 +64,6 @@ public class SsacProvider {
         SendPacket.bniSetEswitchConfigService = rpcRegistry.getRpcService(PacketBniSetEswitchConfigService.class);
         SendPacket.bniSetOltConfigService = rpcRegistry.getRpcService(PacketBniSetOltConfigService.class);
         SendPacket.bniSetRoadmConfigService = rpcRegistry.getRpcService(PacketBniSetRoadmConfigService.class);
-
 
         SendPacket.bniAauFeatureRequestService = rpcRegistry.getRpcService(PacketBniAauFeatureRequestService.class);
         SendPacket.bniDcFeatureRequestService = rpcRegistry.getRpcService(PacketBniDcFeatureRequestService.class);
