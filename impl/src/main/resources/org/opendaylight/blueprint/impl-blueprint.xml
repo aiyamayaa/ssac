@@ -18,9 +18,9 @@ and is available at http://www.eclipse.org/legal/epl-v10.html
              interface="org.opendaylight.controller.md.sal.binding.api.NotificationPublishService"/>
   <reference id="notificationService"
              interface="org.opendaylight.controller.md.sal.binding.api.NotificationService"/>
-
   <reference id="rpcRegister"
              interface="org.opendaylight.controller.sal.binding.api.RpcProviderRegistry"/>
+
   <bean id="provider"
     class="org.opendaylight.feng.ssac.impl.SsacProvider"
     init-method="init" destroy-method="close">
@@ -29,11 +29,14 @@ and is available at http://www.eclipse.org/legal/epl-v10.html
     <argument ref="notificationService"/>
     <argument ref="rpcRegister"/>
   </bean>
-  <service id="LinkPropertyService" interface="org.opendaylight.feng.ssac.impl.TransportResourceManager.LinkPropertyService">
-    <bean class="org.opendaylight.feng.ssac.impl.TransportResourceManager.LinkProperty"/>
+
+
+
+  <service id="linkPropertyService" interface="org.opendaylight.feng.ssac.impl.southboundInterface.LinkPropertyService">
+    <bean class="org.opendaylight.feng.ssac.impl.southboundInterface.LinkProperty"/>
   </service>
-  <service id="sendPacket" interface="org.opendaylight.feng.ssac.impl.TransportResourceManager.SendPacketService">
-    <bean class="org.opendaylight.feng.ssac.impl.TransportResourceManager.SendPacket"/>
+  <service id="sendPacketService" interface="org.opendaylight.feng.ssac.impl.southboundInterface.SendPacketService">
+    <bean class="org.opendaylight.feng.ssac.impl.southboundInterface.SendPacket"/>
   </service>
 
 </blueprint>

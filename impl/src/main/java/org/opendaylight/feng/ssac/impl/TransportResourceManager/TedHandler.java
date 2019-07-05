@@ -29,6 +29,7 @@ import org.opendaylight.yang.gen.v1.urn.opendaylight.packet.bni.roadmfeaturerepl
 import org.opendaylight.yang.gen.v1.urn.opendaylight.packet.bni.roadmfeaturereply.rev180606.PacketBniRoadmFeatureReplyListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.opendaylight.feng.ssac.impl.southboundInterface.LinkProperty;
 
 public class TedHandler implements PacketBniRoadmFeatureReplyListener,PacketBniRoadmConfigReplyListener,PacketBniDcFeatureReplyListener,
         PacketBniDcConfigReplyListener,PacketBniOltFeatureReplyListener,PacketBniOltConfigReplyListener,PacketBniAauFeatureReplyListener,

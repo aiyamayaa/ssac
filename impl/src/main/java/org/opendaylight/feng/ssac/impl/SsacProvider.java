@@ -11,8 +11,8 @@ import org.opendaylight.controller.md.sal.binding.api.DataBroker;
 import org.opendaylight.controller.md.sal.binding.api.NotificationPublishService;
 import org.opendaylight.controller.md.sal.binding.api.NotificationService;
 import org.opendaylight.controller.sal.binding.api.RpcProviderRegistry;
-import org.opendaylight.feng.ssac.impl.TransportResourceManager.SendPacket;
 import org.opendaylight.feng.ssac.impl.TransportResourceManager.TedHandler;
+import org.opendaylight.feng.ssac.impl.TransportResourceManager.TrConfig;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.packet.bni.aaufeaturerequest.rev180606.PacketBniAauFeatureRequestService;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.packet.bni.dcfeaturerequest.rev180606.PacketBniDcFeatureRequestService;
 import org.opendaylight.yang.gen.v1.urn.opendaylight.packet.bni.eswitchfeaturerequest.rev180606.PacketBniEswitchFeatureRequestService;
@@ -59,17 +59,17 @@ public class SsacProvider {
      */
     public void init() {
         LOG.info("SsacProvider Session Initiated");
-        SendPacket.bniSetDcConfigService = rpcRegistry.getRpcService(PacketBniSetDcConfigService.class);
-        SendPacket.bniSetAauConfigService = rpcRegistry.getRpcService(PacketBniSetAauConfigService.class);
-        SendPacket.bniSetEswitchConfigService = rpcRegistry.getRpcService(PacketBniSetEswitchConfigService.class);
-        SendPacket.bniSetOltConfigService = rpcRegistry.getRpcService(PacketBniSetOltConfigService.class);
-        SendPacket.bniSetRoadmConfigService = rpcRegistry.getRpcService(PacketBniSetRoadmConfigService.class);
+        TrConfig.bniSetDcConfigService = rpcRegistry.getRpcService(PacketBniSetDcConfigService.class);
+        TrConfig.bniSetAauConfigService = rpcRegistry.getRpcService(PacketBniSetAauConfigService.class);
+        TrConfig.bniSetEswitchConfigService = rpcRegistry.getRpcService(PacketBniSetEswitchConfigService.class);
+        TrConfig.bniSetOltConfigService = rpcRegistry.getRpcService(PacketBniSetOltConfigService.class);
+        TrConfig.bniSetRoadmConfigService = rpcRegistry.getRpcService(PacketBniSetRoadmConfigService.class);
 
-        SendPacket.bniAauFeatureRequestService = rpcRegistry.getRpcService(PacketBniAauFeatureRequestService.class);
-        SendPacket.bniDcFeatureRequestService = rpcRegistry.getRpcService(PacketBniDcFeatureRequestService.class);
-        SendPacket.bniEswitchFeatureRequestService = rpcRegistry.getRpcService(PacketBniEswitchFeatureRequestService.class);
-        SendPacket.bniOltFeatureRequestService = rpcRegistry.getRpcService(PacketBniOltFeatureRequestService.class);
-        SendPacket.bniRoadmFeatureRequestService = rpcRegistry.getRpcService(PacketBniRoadmFeatureRequestService.class);
+        TrConfig.bniAauFeatureRequestService = rpcRegistry.getRpcService(PacketBniAauFeatureRequestService.class);
+        TrConfig.bniDcFeatureRequestService = rpcRegistry.getRpcService(PacketBniDcFeatureRequestService.class);
+        TrConfig.bniEswitchFeatureRequestService = rpcRegistry.getRpcService(PacketBniEswitchFeatureRequestService.class);
+        TrConfig.bniOltFeatureRequestService = rpcRegistry.getRpcService(PacketBniOltFeatureRequestService.class);
+        TrConfig.bniRoadmFeatureRequestService = rpcRegistry.getRpcService(PacketBniRoadmFeatureRequestService.class);
 
         if(notificationService != null){
             LOG.info("NotificationSercive is"+notificationService.toString());

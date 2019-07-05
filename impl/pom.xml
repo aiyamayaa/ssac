@@ -22,12 +22,14 @@ and is available at http://www.eclipse.org/legal/epl-v10.html
   <version>0.1.0-SNAPSHOT</version>
   <packaging>bundle</packaging>
 
+
   <dependencies>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>ssac-api</artifactId>
       <version>${project.version}</version>
     </dependency>
+
     <dependency>
       <groupId>org.opendaylight.openflowplugin.model</groupId>
       <artifactId>model-flow-service</artifactId>
@@ -51,11 +53,17 @@ and is available at http://www.eclipse.org/legal/epl-v10.html
       <artifactId>mockito-all</artifactId>
       <scope>test</scope>
     </dependency>
+
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
     </dependency>
 
+    <!--<dependency>-->
+      <!--<groupId>org.yaml</groupId>-->
+      <!--<artifactId>snakeyaml</artifactId>-->
+      <!--<version>1.24</version>-->
+    <!--</dependency>-->
 
   </dependencies>
   <build>
@@ -66,7 +74,7 @@ and is available at http://www.eclipse.org/legal/epl-v10.html
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Export-Package>org.opendaylight.feng.ssac.impl</Export-Package>
+            <Export-Package>org.opendaylight.feng.ssac.impl.southboundInterface</Export-Package>
           </instructions>
         </configuration>
       </plugin>

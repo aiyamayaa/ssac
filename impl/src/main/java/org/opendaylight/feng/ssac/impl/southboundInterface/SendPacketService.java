@@ -5,7 +5,7 @@
  * terms of the Eclipse Public License v1.0 which accompanies this distribution,
  * and is available at http://www.eclipse.org/legal/epl-v10.html
  */
-package org.opendaylight.feng.ssac.impl.TransportResourceManager;
+package org.opendaylight.feng.ssac.impl.southboundInterface;
 
 import java.util.List;
 import java.util.Map;
@@ -40,7 +40,7 @@ public interface SendPacketService {
                           Long outport31Wavelength,Long outport32Wavelength,Long outport33Wavelength,Long outport34Wavelength,
                           Long outport41Wavelength,Long outport42Wavelength,Long outport43Wavelength,Long outport44Wavelength);
 
-    public void send37aau();
+//    public void send37aau();
     public void send26roadm();
 
 }

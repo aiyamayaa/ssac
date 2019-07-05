@@ -10,7 +10,7 @@ package org.opendaylight.feng.ssac.impl.ComputeResourceManager;
 import org.json.JSONObject;
 import org.opendaylight.feng.ssac.impl.Agency.OpenstackAgency;
 import org.opendaylight.feng.ssac.impl.Agency.OsmAgency;
-import org.opendaylight.feng.ssac.impl.TransportResourceManager.SendPacket;
+import org.opendaylight.feng.ssac.impl.southboundInterface.SendPacket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +20,7 @@ public class CRManager {
     private static final Logger LOG = LoggerFactory.getLogger(SendPacket.class);
 
     OsmAgency osmAgency = new OsmAgency(23456,"10.112.197.221");
-    OpenstackAgency connected = new OpenstackAgency();
+
 
     public void configOsm(String cmd){
         Thread t = new Thread(()->{
@@ -30,11 +30,21 @@ public class CRManager {
     }
 
 
+    public Boolean deleteDuCu(Map<Short,String> results, String type){
+        if(type.equals("du")){
+            return deleteDu(results);
+        }else if(type.equals("cu")){
+            return deleteCu(results);
+        }else{
+            return false;
+        }
+    }
 
     public Boolean deleteDu(Map<Short,String> duResults){
 
         if(duResults!=null){
             for(Map.Entry<Short, String> m :duResults.entrySet()){
+                OpenstackAgency connected = new OpenstackAgency();
                 connected.delete(m.getValue());
             }
             return true;
@@ -49,6 +59,7 @@ public class CRManager {
         //-----------cuilu---------
         if(cuResults!=null){
             for(Map.Entry<Short, String> m :cuResults.entrySet()){
+                OpenstackAgency connected = new OpenstackAgency();
                 connected.delete(m.getValue());
             }
             return true;
@@ -59,6 +70,7 @@ public class CRManager {
     }
 
     public String createDuCu(Short id,String type){
+        OpenstackAgency connected = new OpenstackAgency();
         String result = connected.createVM(type+id);
         JSONObject object = new JSONObject(result);
         JSONObject tmp = object.getJSONObject("output");
